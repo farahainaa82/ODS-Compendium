@@ -61,10 +61,15 @@ if os.path.exists(js_path):
     js = js.replace('"/jas-logo.png"', f'"{logo_data_uri}"')
     js = js.replace("'/jas-logo.png'", f"'{logo_data_uri}'")
     # Rewrite the Compendium PDF URL prefix inside the bundle so React
-    # points to Streamlit's static file endpoint (/app/static/references/).
-    # Covers both the template literal `/references/${encodeURIComponent(yn[i])}`
-    # and the pre-computed `/references/%5B...%5D...pdf` constants.
-    js = js.replace("/references/", "/app/static/references/")
+    # points to the GitHub Pages hosted copies. Covers both the template
+    # literal `/references/${encodeURIComponent(yn[i])}` (incl. `#page=N`
+    # fragments) and the pre-computed `/references/%5B...%5D...pdf`
+    # constants — both EN and BM resolve to the language-specific file
+    # on the farahainaa82.github.io host.
+    js = js.replace(
+        "/references/",
+        "https://farahainaa82.github.io/ODS-Compendium/static/references/",
+    )
     html = html.replace(
         '<script type="module" crossorigin src="/assets/index-B-gRmubr.js"></script>',
         f"<script type=\"module\">{js}</script>",
